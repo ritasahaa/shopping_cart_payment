@@ -3,12 +3,15 @@ import axios from "axios";
 function Cart() {
   const handlePayment = async () => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/payment/create-order",
-        {
-          amount: 499,
-        }
-      );
+      const BASE_URL =
+        import.meta.env.MODE === "development"
+          ? "http://localhost:5000"
+          : "https://your-backend.onrender.com";
+
+      await axios.post(`${BASE_URL}/api/payment/create-order`, {
+        amount: 499,
+      });
+      console.log("Order Response:", data);
 
       const options = {
         key: "rzp_test_TK0MiPglv1DCYw",
@@ -18,9 +21,27 @@ function Cart() {
         description: "Wireless Mouse",
         order_id: data.id,
 
+        prefill: {
+          name: "Rita",
+          email: "rita@gmail.com",
+          contact: "9876543210",
+        },
+
+        retry: {
+          enabled: false,
+        },
+
+        modal: {
+          escape: true,
+          ondismiss: function () {
+            console.log("Checkout Closed");
+          },
+        },
+
         handler: function (response) {
+          console.log("Payment Success:", response);
+
           alert("✅ Payment Successful");
-          console.log(response);
         },
 
         theme: {
@@ -31,7 +52,7 @@ function Cart() {
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
     } catch (err) {
-      console.log(err);
+      console.error("Payment Error:", err);
     }
   };
 
@@ -54,9 +75,7 @@ function Cart() {
           life.
         </p>
 
-        <button onClick={handlePayment}>
-          Buy Now
-        </button>
+        <button onClick={handlePayment}>Buy Now</button>
       </div>
     </div>
   );
