@@ -6,7 +6,9 @@ function Cart() {
       const BASE_URL =
         import.meta.env.MODE === "development"
           ? "http://localhost:5000"
-          : "https://your-backend.onrender.com";
+          : "https://shopping-cart-payment-server.onrender.com"
+
+";
 
       await axios.post(`${BASE_URL}/api/payment/create-order`, {
         amount: 499,
