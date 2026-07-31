@@ -11,7 +11,7 @@ function Cart() {
       );
 
       const options = {
-        key: "rzp_test_TJmjLnJ8BNG99D",
+        key: "rzp_test_TK0MiPglv1DCYw",
         amount: data.amount,
         currency: data.currency,
         name: "Rita Shopping Store",
